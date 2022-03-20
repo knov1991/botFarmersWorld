@@ -32,7 +32,8 @@ farmAtual = 0
 ##### INICIAR BOT #####
 #######################
 while True:
-    sleep(randint(10,15))
+
+    sleep(randint(8,12))
 
     #Logar no jogo
     if(procuraClick('login') == True):
@@ -50,11 +51,16 @@ while True:
         print(datetime.now().strftime('%d/%m/%Y %H:%M:%S'),'- Total Minerado:',farmAtual)
         sleep(0.5)
 
+    #se tiver sem Cpu fecha alerta
     if(procuraClick('acabouCpuNet') == True):
         pyautogui.moveTo(960,150)
         sleep(0.5)
         pyautogui.click()
         sleep(0.5)
+
+    #trocar ferramenta Saw
+    if(procuraClick('ferramentaSaw') == True):
+        sleep(2)
 
     #se farmAtual passar do maxFarm // refresh na página
     if(farmAtual > maxFarm):
