@@ -2,19 +2,19 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from time import sleep
-import numpy as np
-import random
-import keyboard
-import pyautogui
 from datetime import datetime
+#import numpy as np
+#import random
+#import keyboard
+#import pyautogui
 
 #########################
 #####   VARIÁVEIS   #####
 #########################
-totalFerramentas = 3
-memberWood = 1
+totalFerramentas = 5
+memberWood = 2
 memberGold = 0
-memberFood = 0
+memberFood = 2
 membership = memberGold+memberWood+memberFood
 
 #############################
@@ -96,9 +96,9 @@ def trocarFerramenta(numeroFerramenta):
     except:
         return
 
-def clickMinerar():
+def clickMinerar(ferramenta):
     try:
-        print(datetime.now().strftime('%d/%m/%Y %H:%M:%S'),'- Minerar')
+        print(datetime.now().strftime('%d/%m/%Y %H:%M:%S'),'- Minerar', ferramenta)
         btnMinerar = driver.find_elements(By.CLASS_NAME, "button-section")[0]
         driver.execute_script("arguments[0].click();", btnMinerar)
     except:
@@ -110,34 +110,33 @@ def clickReparar():
         driver.execute_script("arguments[0].click();", btnReparar)
     except:
         return
-""" def clickOK():
-try:
-    btnOK = driver.find_elements(By.CLASS_NAME, "button-section")[2].text
-    print(btnOK) """
 
 
 def minerar():
     try:
-        energia = verificarEnergia()
         nome = nomeFerramenta()
         stack = stackFarm()
-        if nome == 'Saw':
-            sleep(2)
-            pass
-            """ if durabilidade() < 15*(1+memberWood*2):
+        """ if nome == 'Saw':
+            if durabilidade() < 15*(1+memberWood*2):
                 clickReparar()
-                sleep(10)
+                sleep(20)
             if stack == 1+(memberWood*2):
-                if energia >= 30*(1+memberWood*2):
-                    clickMinerar()
-                    sleep(10) """
+                clickMinerar('Saw')
+                sleep(20) """
+        if nome == 'Chainsaw':
+            if durabilidade() < 45*(1+memberWood*2):
+                clickReparar()
+                sleep(20)
+            if stack == 1+(memberWood*2):
+                clickMinerar('Chainsaw')
+                sleep(20)
         if nome == 'Mining Excavator':
             if durabilidade() < 5*(1+memberGold*2):
                 clickReparar()
-                sleep(10)
+                sleep(20)
             if stack == 1+(memberGold*2):
-                clickMinerar()
-                sleep(10)
+                clickMinerar('Mining Excavator')
+                sleep(20)
     except:
         return
 
@@ -176,7 +175,7 @@ while True:
         trocarFerramenta(i)
         sleep(2)
         #Recarregar Energia
-        if verificarEnergia() < 133:
+        if verificarEnergia() < 300:
             energiaFaltando = maxEnergia() - verificarEnergia()
             if int(verificarFood())*5 > energiaFaltando:
                 recarregaEnergia(energiaFaltando/5)
